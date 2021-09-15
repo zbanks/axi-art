@@ -1,6 +1,9 @@
 `axi-art`
 =========
-Procgen line art to plot on an AxiDraw
+Procgen line art to plot on an AxiDraw.
+
+This repo is kind of a mess; neither the source nor the output is intended for public consumption.
+The code is stream-of-conciousness, and is primarily here as a backup.
 
 `crosswords`
 ============
@@ -13,6 +16,8 @@ Every 7x7 crossword grid with the following constraints:
 - 180 degree rotational symmetry
 
 This piece was never fully plotted on the AxiDraw; it has *way too many* line segments.
+
+![crosswords](crosswords.svg)
 
 `three_views`
 =============
@@ -45,4 +50,14 @@ Generated With
 
     $ python three_views.py -N 300 -p 1 -H 12 -W 8.5 -R 32 -S -r three_views/1.png -o three_views/1.axi
     $ python three_views.py -N 300 -p 2 -H 12 -W 8.5 -R 32 -S -r three_views/2.png -o three_views/2.axi
-    $ python three_views.py -N 300 -p 4 -H 12 -W 8.5 -R 32 -S -r three_views/3.png -o three_views/3.axi
+    $ python three_views.py -N 300 -p 4 -H 12 -W 8.5 -R 32 -S -r three_views/4.png -o three_views/4.axi
+
+Result
+------
+<table>
+     <tr>
+        <td><img src="three_views/1.png"></td>
+        <td><img src="three_views/2.png"></td>
+        <td><img src="three_views/4.png"></td>
+    </tr>
+</table>

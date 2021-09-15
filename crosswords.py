@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 import itertools
+import axi
 
 def print_board(board):
     print "\n".join(board)
@@ -38,17 +41,16 @@ def valid_boards(size=7, min_word=3):
 
 
 def plot_board(board, x, y):
-    path = ""
-    ratio = 0.4
+    paths = []
+    #ratio = 0.4
+    ratio = 1.0
     cell = ratio / len(board)
-    x *= ratio * 1.1
-    y *= ratio * 1.1
-    for dx in range(len(board) + 1):
-        dx *= cell
-        path += "M {} {} v {} ".format(x + dx, y, ratio)
-    for dy in range(len(board) + 1):
-        dy *= cell
-        path += "M {} {} h {} ".format(x, y + dy, ratio)
+    #for dx in range(len(board) + 1):
+    #    dx *= cell
+    #    paths.append([(x + dx, y), (x + dx, y + ratio)])
+    #for dy in range(len(board) + 1):
+    #    dy *= cell
+    #    paths.append([(x, y + dy), (x + ratio, y + dy)])
 
     for dx, row in enumerate(board):
         dx *= cell
@@ -56,25 +58,10 @@ def plot_board(board, x, y):
             dy *= cell
             if val == '.':
                 continue
-            path += "M {} {} l {} {} ".format(x + dx, y + dy, cell, cell)
-            path += "m -{} 0 l {} -{} ".format(cell, cell, cell)
+            paths.append([(x + dx, y + dy), (x + dx + cell, y + dy + cell)])
+            paths.append([(x + dx + cell, y + dy), (x + dx, y + dy + cell)])
 
-
-    style = "fill:none; stroke:#000000; stroke-width:0.01; stroke-opacity:1"
-    print '<g style="{}"><path d="{}" /></g>'.format(style, path)
-
-def svg_start():
-    print """
-<svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="8.5in"
-    height="11in"
-    viewBox="0 0 8.5 11">
-<g id="layer1">
-"""
-
-def svg_end():
-    print "</g></svg>"
+    return paths
 
 
 def main():
@@ -93,13 +80,25 @@ def main():
                 print " ".join(row)
             print ""
 
+    PADDING = 9 / 7.
+    paths = []
     if True:
-        svg_start()
+        for row in range(21):
+            for dy in range(8):
+                y = (row * PADDING + dy / 7.)
+                paths.append([(0, y), (14 * PADDING + 1, y)])
+        for col in range(15):
+            for dx in range(8):
+                x = (col * PADDING + dx / 7.)
+                paths.append([(x, 0), (x, 20 * PADDING + 1) ])
         for y, brow in enumerate(chunk(boards[1:], 15)):
             for x, board in enumerate(brow):
-                plot_board(board, x, y)
-        svg_end()
+                ps = plot_board(board, x * PADDING, y * PADDING)
+                paths.extend(ps)
 
+    d = axi.Drawing(paths)
+    cli = axi.cli()
+    cli.draw(d)
 
 if __name__ == "__main__":
     main()
